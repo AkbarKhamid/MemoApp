@@ -18,13 +18,13 @@ const BaseTheme = {
   colors: {
     text: '#202124',
     background: '#fff',
-    primary: '#151522',
+    primary: '#252629',
     secondary: '#9c27b0',
     muted: '#f1f3f4',
 
     // from figma file
 
-    black: '#151522',
+    black: '#252629',
     grey1: '#333333',
     grey2: '#666666',
     grey3: '#C3C3C3',

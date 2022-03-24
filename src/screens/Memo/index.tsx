@@ -1,7 +1,6 @@
-import { useMemos } from 'api'
 import { translate, useAuth } from 'core'
 import React, { memo } from 'react'
-import { ActivityIndicator, FlatList } from 'react-native'
+import { FlatList } from 'react-native'
 import { Button, HEIGHT, Pressable, Screen, Text, View, WIDTH } from 'ui'
 import { MemoType } from '../../../types/memo'
 
@@ -30,10 +29,13 @@ const tempMemo = [
 
 export const Memo = () => {
   const { signOut } = useAuth()
-  const { data, isLoading } = useMemos()
+  // const { data, isLoading } = useMemos()
   const renderItem = (item: MemoType) => (
-    <Pressable borderColor="black">
-      <Text>{item.title}</Text>
+    <Pressable padding="m" borderColor="black" width="100%">
+      <View width="100%" justifyContent="space-between">
+        <Text>{item.title}</Text>
+        <Text>{item.updatedAt}</Text>
+      </View>
       <Text>{item.description}</Text>
     </Pressable>
   )
@@ -41,29 +43,31 @@ export const Memo = () => {
     <Screen>
       <View
         position="absolute"
-        zIndex={999}
         width={WIDTH}
         height={HEIGHT}
         justifyContent="center"
         alignContent="center"
       >
-        {isLoading && <ActivityIndicator color="#000" />}
-      </View>
-      <View flex={1} justifyContent="center">
-        <Text variant="header" textAlign="center">
-          {translate('actions.add')}
-        </Text>
+        {/* {isLoading && <ActivityIndicator color="#000" />} */}
       </View>
       <FlatList
-        contentContainerStyle={{ paddingBottom: 10 }}
+        contentContainerStyle={{ flex: 1, height: HEIGHT }}
         data={tempMemo}
         keyExtractor={(_, index) => `${index}`}
         ItemSeparatorComponent={memo(() => (
-          <View height={0.2} borderBottomColor="grey1" />
+          <View height={0.2} backgroundColor="grey1" />
         ))}
         renderItem={({ item }) => renderItem(item)}
       />
-      <Button label="LogOut" onPress={signOut} />
+      <View position="absolute" width={WIDTH} bottom={30}>
+        <Button
+          label={translate('actions.add')}
+          marginHorizontal="m"
+          variant="primary"
+          backgroundColor="black"
+          onPress={signOut}
+        />
+      </View>
     </Screen>
   )
 }
