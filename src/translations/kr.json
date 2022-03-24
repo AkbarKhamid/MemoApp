@@ -1,0 +1,19 @@
+{
+  "name": " Memo App",
+  "screens": {
+    "memos": "목록리스트"
+  },
+  "placeholders": {
+    "noTitle": "제목업슴",
+    "noBody": "내용업슴"
+  },
+  "actions": {
+    "edit": "편집",
+    "del": "삭제",
+    "add": "추가"
+  },
+  "labels": {
+    "password": "비밀번호",
+    "email": "이메일"
+  }
+}

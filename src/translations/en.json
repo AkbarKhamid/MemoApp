@@ -1,0 +1,19 @@
+{
+  "name": " Memo App",
+  "screens": {
+    "memos": "Memos"
+  },
+  "placeholders": {
+    "noTitle": "No title",
+    "noBody": "No body"
+  },
+  "actions": {
+    "edit": "Edit",
+    "del": "Remove",
+    "add": "Add"
+  },
+  "labels": {
+    "password": "Password",
+    "email": "Email"
+  }
+}
