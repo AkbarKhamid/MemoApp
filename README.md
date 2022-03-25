@@ -1,4 +1,4 @@
-# Memo app - submission for WashWat coding assessment
+# Memo app - submission for Wash Swat coding assessment
 
 ## ▶️ Usage
 
