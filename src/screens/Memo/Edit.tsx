@@ -1,9 +1,13 @@
+import { StackActions } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
 import { MemoDetail } from 'components/Memo'
-import { useAppSelector } from 'hooks'
+import { useAppDispatch, useAppSelector } from 'hooks'
 import { MemoStackParams } from 'navigation/MemoNavigator'
 import React, { useEffect } from 'react'
+import { edit, remove } from 'store/slice'
 import { Back, Screen, showErrorMessage } from 'ui'
+import { MemoType } from '../../../types/memo'
+
 type Props = {} & StackScreenProps<MemoStackParams, 'Edit'>
 
 export const Edit = ({ route, navigation }: Props) => {
@@ -11,10 +15,7 @@ export const Edit = ({ route, navigation }: Props) => {
     state.memo.memoList.find((item) => item.id == route.params.id)
   )
 
-  if (memo === undefined) {
-    showErrorMessage()
-    return
-  }
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     navigation.setOptions({
@@ -25,18 +26,33 @@ export const Edit = ({ route, navigation }: Props) => {
     })
   }, [])
 
-  const navigateBack = () => {
-    navigation.goBack()
+  const saveEdit = (newMemo: MemoType) => {
+    try {
+      dispatch(edit(newMemo.id, newMemo.title, newMemo.description))
+    } catch (error) {
+      showErrorMessage()
+    }
   }
 
-  return (
+  const removeMemo = () => {
+    try {
+      if (memo !== undefined) {
+        dispatch(remove(memo.id))
+        navigation.dispatch(StackActions.popToTop())
+      }
+    } catch (error) {
+      showErrorMessage()
+    }
+  }
+
+  return memo ? (
     <Screen>
       <MemoDetail
         memo={memo}
-        onSuccess={navigateBack}
-        onPressEdit={() => navigation.navigate('Edit', { id: memo.id })}
+        onEdit={saveEdit}
+        onRemove={removeMemo}
         editable={true}
       />
     </Screen>
-  )
+  ) : null
 }

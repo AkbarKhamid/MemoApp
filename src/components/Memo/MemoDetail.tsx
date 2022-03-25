@@ -1,56 +1,26 @@
 import { translate } from 'core'
-import { useAppDispatch } from 'hooks'
 import React, { useState } from 'react'
 import { TextInput } from 'react-native'
-import { edit, remove } from 'store/slice'
-import { showErrorMessage, Text, View } from 'ui'
+import { Text, View } from 'ui'
 import { MemoType } from '../../../types/memo'
 type Props = {
   memo: MemoType
   editable: boolean
-  onSuccess: () => void
-  onPressEdit?: () => void
+  onRemove: () => void
+  onEdit: (newMemo: MemoType) => void
 }
 
 export const MemoDetail = ({
   memo,
-  onSuccess,
-  onPressEdit,
+  onRemove,
+  onEdit,
   editable = true,
 }: Props) => {
-  const dispatch = useAppDispatch()
   const [title, setTitle] = useState(memo?.title)
-  const [desc, setDesc] = useState(memo?.description)
+  const [description, setDescription] = useState(memo?.description)
 
-  const saveEdit = () => {
-    try {
-      dispatch(edit(memo.id, title, desc))
-      onSuccess()
-    } catch (error) {
-      console.log('Error: ', error)
-      showErrorMessage()
-    }
-  }
-
-  const removeMemo = () => {
-    try {
-      dispatch(remove(memo.id))
-      onSuccess()
-    } catch (error) {
-      showErrorMessage()
-    }
-  }
-
-  const _onPressEdit = () => {
-    // save the edit
-    if (editable) {
-      saveEdit()
-      return
-    }
-    // navigate to edit page
-    if (onPressEdit !== undefined) {
-      onPressEdit()
-    }
+  const onEditPress = () => {
+    onEdit({ ...memo, title, description })
   }
 
   return (
@@ -77,7 +47,7 @@ export const MemoDetail = ({
           flexDirection="row"
         >
           <Text
-            onPress={_onPressEdit}
+            onPress={onEditPress}
             fontSize={15}
             fontWeight="bold"
             color="textGreen"
@@ -87,7 +57,7 @@ export const MemoDetail = ({
               : translate('actions.edit')}
           </Text>
           <Text
-            onPress={removeMemo}
+            onPress={onRemove}
             fontSize={15}
             fontWeight="bold"
             color="textGreen"
@@ -103,8 +73,8 @@ export const MemoDetail = ({
       </View>
       <TextInput
         editable={editable}
-        value={desc}
-        onChangeText={setDesc}
+        value={description}
+        onChangeText={setDescription}
         multiline={true}
         autoFocus={editable}
       />
