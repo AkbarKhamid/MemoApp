@@ -18,7 +18,7 @@ export const Detail = ({ route, navigation }: Props) => {
 
   useEffect(() => {
     navigation.setOptions({
-      headerTitle: memo?.title,
+      headerTitle: memo.title,
       headerLeft: () => (
         <Back style={{ marginLeft: 15 }} onPress={() => navigation.goBack()} />
       ),
