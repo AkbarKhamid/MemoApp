@@ -1,12 +1,32 @@
 import { API_URL } from '@env'
+import { StackScreenProps } from '@react-navigation/stack'
 import { useMemos } from 'api'
 import { translate, useAuth } from 'core'
-import React from 'react'
+import { useAppDispatch, useAppSelector } from 'hooks'
+import { MemoStackParams } from 'navigation/MemoNavigator'
+import React, { useEffect, useState } from 'react'
 import { ActivityIndicator } from 'react-native'
-import { Button, Screen, showErrorMessage, Text, View } from 'ui'
+import { Back, Button, Screen, showErrorMessage, Text, View } from 'ui'
+type Props = {} & StackScreenProps<MemoStackParams, 'Detail'>
 
-export const Detail = () => {
+export const Detail = ({ route, navigation }: Props) => {
   const { signOut } = useAuth()
+  const dispatch = useAppDispatch()
+  const memo = useAppSelector((state) =>
+    state.memo.memoList.find((item) => item.id == route.params.id)
+  )
+  const [newTitle, setNewTitle] = useState(memo?.title)
+  const [newDescription, setNewDescription] = useState(memo?.description)
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: memo?.title,
+      headerLeft: () => (
+        <Back style={{ marginLeft: 15 }} onPress={() => navigation.goBack()} />
+      ),
+    })
+  }, [])
+
   const { data, isLoading } = useMemos()
   return (
     <Screen>

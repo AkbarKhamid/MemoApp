@@ -53,6 +53,10 @@ export const Memo = ({ navigation }: Props) => {
     }
   }
 
+  const onMemoPress = (id: string) => {
+    navigation.navigate('Detail', { id })
+  }
+
   useEffect(() => {
     navigation.setOptions({
       headerTitle: `메모리스트 ${
@@ -63,6 +67,7 @@ export const Memo = ({ navigation }: Props) => {
 
   const renderItem = (item: MemoType) => (
     <Pressable
+      onPress={() => onMemoPress(item.id)}
       flexDirection="row"
       justifyContent="space-between"
       padding="m"

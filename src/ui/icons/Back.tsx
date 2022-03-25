@@ -1,7 +1,12 @@
 import * as React from 'react'
 import { SvgProps, SvgXml } from 'react-native-svg'
 
-export function Back({ color = '#fff', ...props }: SvgProps) {
+export function Back({
+  color = '#fff',
+  height = 30,
+  width = 30,
+  ...props
+}: SvgProps) {
   const xml = `
     <svg xmlns="http://www.w3.org/2000/svg" 
       class="ionicon" 
@@ -13,5 +18,5 @@ export function Back({ color = '#fff', ...props }: SvgProps) {
       d="M244 400L100 256l144-144M120 256h292"/>
     </svg>
   `
-  return <SvgXml xml={xml} {...props} />
+  return <SvgXml xml={xml} height={height} width={width} {...props} />
 }
