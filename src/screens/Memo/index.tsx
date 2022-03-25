@@ -10,6 +10,7 @@ import {
   HEIGHT,
   Pressable,
   Screen,
+  showErrorMessage,
   Text,
   useTheme,
   View,
@@ -27,21 +28,29 @@ export const Memo = ({ navigation }: Props) => {
   const { colors } = useTheme()
 
   const onRemove = (id: string): void => {
-    console.log('>>>removing', id)
-    dispatch(remove(id))
+    try {
+      console.log('>>>removing', id)
+      dispatch(remove(id))
+    } catch (error) {
+      showErrorMessage()
+    }
   }
 
   const onAdd = () => {
-    const date = new Date().toISOString().slice(0, 10)
-    dispatch(
-      add({
-        id: uuid4(),
-        title: '제목없음',
-        description: '내용없음',
-        createdAt: date,
-        updatedAt: date,
-      })
-    )
+    try {
+      const date = new Date().toISOString().slice(0, 10)
+      dispatch(
+        add({
+          id: uuid4(),
+          title: '제목없음',
+          description: '내용없음',
+          createdAt: date,
+          updatedAt: date,
+        })
+      )
+    } catch (error) {
+      showErrorMessage()
+    }
   }
 
   useEffect(() => {
