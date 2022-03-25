@@ -27,18 +27,22 @@ export const { setMemoList } = memoSlice.actions
 export default memoSlice.reducer
 
 export const add =
-  (newMemo: MemoType): AppThunk =>
+  (memo: MemoType): AppThunk =>
   (dispatch, getState) => {
     const { memoList } = getState().memo
-    dispatch(setMemoList([...memoList, newMemo]))
+    if (memoList.length) {
+      dispatch(setMemoList([...memoList, memo]))
+    } else {
+      dispatch(setMemoList([memo]))
+    }
   }
 
 export const remove =
   (id: string): AppThunk =>
   (dispatch, getState) => {
     const { memoList } = getState().memo
-    const updatedMemoList = memoList.filter((item) => item.id !== id)
-    dispatch(setMemoList(updatedMemoList))
+    const listCpy = memoList.filter((item) => item.id !== id)
+    dispatch(setMemoList(listCpy))
   }
 
 export const edit =
@@ -47,7 +51,7 @@ export const edit =
     const { memoList } = getState().memo
     const index = memoList.findIndex((item) => item.id === id)
     if (index > -1) {
-      const listCpy = memoList
+      const listCpy = [...memoList]
       listCpy[index] = {
         id,
         title,

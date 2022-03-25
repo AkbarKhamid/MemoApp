@@ -1,34 +1,42 @@
-import { API_URL } from '@env'
-import { useMemos } from 'api'
-import { translate, useAuth } from 'core'
-import React from 'react'
-import { ActivityIndicator } from 'react-native'
-import { Button, Screen, showErrorMessage, Text, View } from 'ui'
+import { StackScreenProps } from '@react-navigation/stack'
+import { MemoDetail } from 'components/Memo'
+import { useAppSelector } from 'hooks'
+import { MemoStackParams } from 'navigation/MemoNavigator'
+import React, { useEffect } from 'react'
+import { Back, Screen, showErrorMessage } from 'ui'
+type Props = {} & StackScreenProps<MemoStackParams, 'Edit'>
 
-export const Edit = () => {
-  const { signOut } = useAuth()
-  const { data, isLoading } = useMemos()
+export const Edit = ({ route, navigation }: Props) => {
+  const memo = useAppSelector((state) =>
+    state.memo.memoList.find((item) => item.id == route.params.id)
+  )
+
+  if (memo === undefined) {
+    showErrorMessage()
+    return
+  }
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: memo?.title,
+      headerLeft: () => (
+        <Back style={{ marginLeft: 15 }} onPress={() => navigation.goBack()} />
+      ),
+    })
+  }, [])
+
+  const navigateBack = () => {
+    navigation.goBack()
+  }
+
   return (
     <Screen>
-      <View flex={1} justifyContent="center">
-        <Text variant="header" textAlign="center">
-          {translate('name')}
-        </Text>
-        <Text variant="body" textAlign="center">
-          This is An ENV Var : {API_URL}
-        </Text>
-        {isLoading && <ActivityIndicator color="#000" />}
-
-        <Text variant="body" textAlign="center">
-          Data from Api : {JSON.stringify(data)}
-        </Text>
-        <Button label="LogOut" onPress={signOut} />
-        <Button
-          variant="secondary"
-          label="Show message"
-          onPress={() => showErrorMessage()}
-        />
-      </View>
+      <MemoDetail
+        memo={memo}
+        onSuccess={navigateBack}
+        onPressEdit={() => navigation.navigate('Edit', { id: memo.id })}
+        editable={true}
+      />
     </Screen>
   )
 }

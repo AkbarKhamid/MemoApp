@@ -31,6 +31,7 @@ const BaseTheme = {
     grey4: '#E4E4E4',
     white: 'white',
     red: '#EB5757',
+    textGreen: '#8ACEFA',
   },
   spacing: {
     s: 8,

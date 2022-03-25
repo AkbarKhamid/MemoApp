@@ -10,7 +10,8 @@
   "actions": {
     "edit": "Edit",
     "del": "Remove",
-    "add": "Add"
+    "add": "Add",
+    "saveEdit": "Save"
   },
   "labels": {
     "password": "Password",

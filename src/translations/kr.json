@@ -10,7 +10,8 @@
   "actions": {
     "edit": "편집",
     "del": "삭제",
-    "add": "추가"
+    "add": "추가",
+    "saveEdit": "수정"
   },
   "labels": {
     "password": "비밀번호",
