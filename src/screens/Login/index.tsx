@@ -28,18 +28,23 @@ export const Login = () => {
   }
   return (
     <Screen>
-      <Input control={control} name="email" label="Email" />
+      <Input
+        control={control}
+        name="email"
+        placeholder="jdoe@example.com"
+        label="Email"
+      />
       <Input
         control={control}
         name="password"
         label="Password"
-        placeholder="******"
+        placeholder="Password"
         secureTextEntry={true}
       />
       <Button
         label="Login"
         onPress={handleSubmit(onSubmit)}
-        variant="secondary"
+        variant="primary"
       />
     </Screen>
   )

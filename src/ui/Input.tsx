@@ -34,16 +34,14 @@ export function Input<T>(props: Props<T>) {
   const borderColor = fieldState.invalid
     ? colors.red
     : isFocussed
-    ? colors.secondary
+    ? colors.primary
     : colors.grey2
   return (
     <View key={`input-${name}`} marginBottom="m">
       {label && (
         <Text
           variant="label"
-          color={
-            fieldState.invalid ? 'red' : isFocussed ? 'secondary' : 'grey1'
-          }
+          color={fieldState.invalid ? 'red' : isFocussed ? 'primary' : 'grey1'}
         >
           {label}
         </Text>

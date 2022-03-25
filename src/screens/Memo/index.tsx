@@ -1,7 +1,17 @@
-import { translate, useAuth } from 'core'
+import { translate } from 'core'
 import React, { memo } from 'react'
 import { FlatList } from 'react-native'
-import { Button, HEIGHT, Pressable, Screen, Text, View, WIDTH } from 'ui'
+import {
+  Button,
+  HEIGHT,
+  Pressable,
+  Screen,
+  Text,
+  useTheme,
+  View,
+  WIDTH,
+} from 'ui'
+import { Close } from 'ui/icons/Close'
 import { MemoType } from '../../../types/memo'
 
 const tempMemo = [
@@ -28,15 +38,44 @@ const tempMemo = [
 ]
 
 export const Memo = () => {
-  const { signOut } = useAuth()
-  // const { data, isLoading } = useMemos()
+  const { colors } = useTheme()
+
+  const onRemove = (id: string): void => {
+    console.log('>>> removing', id)
+  }
+
+  const onAdd = () => {
+    console.log('onAdd')
+  }
+
   const renderItem = (item: MemoType) => (
-    <Pressable padding="m" borderColor="black" width="100%">
-      <View width="100%" justifyContent="space-between">
-        <Text>{item.title}</Text>
-        <Text>{item.updatedAt}</Text>
+    <Pressable
+      flexDirection="row"
+      justifyContent="space-between"
+      padding="m"
+      borderColor="black"
+      width="100%"
+    >
+      <View>
+        <View width="100%" flexDirection="row">
+          <Text fontWeight="600" fontSize={16}>
+            {item.title}
+          </Text>
+          <Text paddingLeft="m" style={{ margin: 'auto' }} color="grey3">
+            {item.updatedAt}
+          </Text>
+        </View>
+        <Text color="grey2" fontSize={14} paddingTop="s">
+          {item.description}
+        </Text>
       </View>
-      <Text>{item.description}</Text>
+      <Close
+        style={{ margin: 'auto' }}
+        color={colors.grey3}
+        height={35}
+        width={35}
+        onPress={() => onRemove(item.id)}
+      />
     </Pressable>
   )
   return (
@@ -65,7 +104,7 @@ export const Memo = () => {
           marginHorizontal="m"
           variant="primary"
           backgroundColor="black"
-          onPress={signOut}
+          onPress={onAdd}
         />
       </View>
     </Screen>
