@@ -29,7 +29,7 @@ export const Edit = ({ route, navigation }: Props) => {
   const saveEdit = (newMemo: MemoType) => {
     try {
       dispatch(edit(newMemo.id, newMemo.title, newMemo.description))
-      navigation.goBack()
+      navigation.dispatch(StackActions.popToTop())
     } catch (error) {
       showErrorMessage()
     }
