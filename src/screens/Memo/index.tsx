@@ -1,6 +1,10 @@
+import { StackScreenProps } from '@react-navigation/stack'
 import { translate } from 'core'
-import React, { memo } from 'react'
+import { useAppDispatch, useAppSelector } from 'hooks'
+import { MemoStackParams } from 'navigation/MemoNavigator'
+import React, { useEffect } from 'react'
 import { FlatList } from 'react-native'
+import { add, remove } from 'store/slice'
 import {
   Button,
   HEIGHT,
@@ -12,41 +16,41 @@ import {
   WIDTH,
 } from 'ui'
 import { Close } from 'ui/icons/Close'
+import { v4 as uuid4 } from 'uuid'
 import { MemoType } from '../../../types/memo'
 
-const tempMemo = [
-  {
-    // unique string 값
-    id: 'AMIFE-6AEM-EFIAM-MEIFE',
-    title: 'memo의 제목입니다',
-    description: 'memo의 상세 내용입니다.',
-    // memo의 생성날짜
-    createdAt: '2021-01-06',
-    // memo의 업데이트 날짜
-    updatedAt: '2021-02-01',
-  },
-  {
-    // unique string 값
-    id: 'AMIFE-6AEM-EFIAM-MEIFE12',
-    title: 'memo의 제목입니다',
-    description: 'memo의 상세 내용입니다.',
-    // memo의 생성날짜
-    createdAt: '2021-01-06',
-    // memo의 업데이트 날짜
-    updatedAt: '2021-02-01',
-  },
-]
+type Props = {} & StackScreenProps<MemoStackParams, 'Memo'>
 
-export const Memo = () => {
+export const Memo = ({ navigation }: Props) => {
+  const dispatch = useAppDispatch()
+  const { memoList } = useAppSelector((state) => state.memo)
   const { colors } = useTheme()
 
   const onRemove = (id: string): void => {
-    console.log('>>> removing', id)
+    console.log('>>>removing', id)
+    dispatch(remove(id))
   }
 
   const onAdd = () => {
-    console.log('onAdd')
+    const date = new Date().toISOString().slice(0, 10)
+    dispatch(
+      add({
+        id: uuid4(),
+        title: '제목없음',
+        description: '내용없음',
+        createdAt: date,
+        updatedAt: date,
+      })
+    )
   }
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: `메모리스트 ${
+        memoList?.length ? '(' + memoList.length + ')' : ''
+      }`,
+    })
+  }, [memoList])
 
   const renderItem = (item: MemoType) => (
     <Pressable
@@ -90,12 +94,14 @@ export const Memo = () => {
         {/* {isLoading && <ActivityIndicator color="#000" />} */}
       </View>
       <FlatList
-        contentContainerStyle={{ flex: 1, height: HEIGHT }}
-        data={tempMemo}
+        contentContainerStyle={{ paddingBottom: 100 }}
+        showsVerticalScrollIndicator={false}
+        removeClippedSubviews={true}
+        data={memoList}
         keyExtractor={(_, index) => `${index}`}
-        ItemSeparatorComponent={memo(() => (
+        ItemSeparatorComponent={() => (
           <View height={0.2} backgroundColor="grey1" />
-        ))}
+        )}
         renderItem={({ item }) => renderItem(item)}
       />
       <View position="absolute" width={WIDTH} bottom={30}>
